@@ -3,7 +3,7 @@ com.rsaladocid.repository
 
 A simple common API that supports CRUD operations to store and retrieve key-value pairs from your favorite document-based database.
 
-Currently, the following NoSQL document-based databases are supported: ElasticSearch
+Currently, the following NoSQL document-based databases are supported: [ElasticSearch](https://www.elastic.co/products/elasticsearch)
 
 Basic usage
 -----------------
