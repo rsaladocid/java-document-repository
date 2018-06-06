@@ -55,7 +55,6 @@ try {
 ```
 
 ### Update document
------------------
 
 When the content of a document is changed, don´t forget commit it:
 
@@ -83,7 +82,6 @@ try {
 ```
 
 ### Delete document
------------------
 
 Any document can be removed from the database using the corresponding id:
 
@@ -102,7 +100,6 @@ try {
 	e.printStackTrace();
 }
 ```
-
 
 License
 -------
