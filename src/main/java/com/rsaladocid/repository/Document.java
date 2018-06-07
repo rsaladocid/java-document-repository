@@ -9,6 +9,29 @@ import java.util.Map;
  */
 public class Document {
 
+	static class Builder {
+
+		private final String id;
+		private final Map<String, Object> data;
+
+		private Map<String, String> metadata;
+
+		public Builder(String id, Map<String, Object> data) {
+			this.id = id;
+			this.data = data;
+		}
+
+		public Builder metadata(Map<String, String> metadata) {
+			this.metadata = metadata;
+			return this;
+		}
+
+		public Document build() {
+			return new Document(this);
+		}
+
+	}
+
 	/**
 	 * The unique id
 	 */
@@ -24,15 +47,10 @@ public class Document {
 	 */
 	private Map<String, String> metadata;
 
-	Document(String id, Map<String, Object> data) {
-		setData(data);
-		setId(id);
-	}
-
-	Document(String id, Map<String, Object> data, Map<String, String> metadata) {
-		setData(data);
-		setId(id);
-		setMetadata(metadata);
+	Document(Builder builder) {
+		setId(builder.id);
+		setData(builder.data);
+		setMetadata(builder.metadata);
 	}
 
 	/**

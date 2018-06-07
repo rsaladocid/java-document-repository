@@ -77,7 +77,7 @@ public class ElasticSearchRepository implements Repository {
 			IndexResponse response = client.index(request);
 
 			if (response.getResult() == DocWriteResponse.Result.CREATED) {
-				return buildDocument(response.getId(), content);
+				return new Document.Builder(response.getId(), content).build();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -98,7 +98,7 @@ public class ElasticSearchRepository implements Repository {
 			GetResponse response = client.get(request);
 
 			if (response.isExists()) {
-				return buildDocument(response.getId(), response.getSourceAsMap());
+				return new Document.Builder(response.getId(), response.getSourceAsMap()).build();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -150,10 +150,6 @@ public class ElasticSearchRepository implements Repository {
 		}
 
 		return false;
-	}
-
-	private Document buildDocument(String id, Map<String, Object> data) {
-		return new Document(id, data);
 	}
 
 }
