@@ -73,6 +73,7 @@ public class ElasticSearchRepository implements Repository {
 		request.source(content);
 
 		try {
+			connect();
 			IndexResponse response = client.index(request);
 
 			if (response.getResult() == DocWriteResponse.Result.CREATED) {
@@ -80,6 +81,7 @@ public class ElasticSearchRepository implements Repository {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException("Connection cannot be established");
 		}
 
 		return null;
@@ -92,6 +94,7 @@ public class ElasticSearchRepository implements Repository {
 		GetRequest request = new GetRequest(getName(), type, id);
 
 		try {
+			connect();
 			GetResponse response = client.get(request);
 
 			if (response.isExists()) {
@@ -99,6 +102,7 @@ public class ElasticSearchRepository implements Repository {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException("Connection cannot be established");
 		}
 
 		return null;
@@ -112,6 +116,7 @@ public class ElasticSearchRepository implements Repository {
 		request.source(document.getData());
 
 		try {
+			connect();
 			IndexResponse response = client.index(request);
 
 			if (response.getResult() == DocWriteResponse.Result.UPDATED) {
@@ -119,6 +124,7 @@ public class ElasticSearchRepository implements Repository {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException("Connection cannot be established");
 		}
 
 		return null;
@@ -131,6 +137,7 @@ public class ElasticSearchRepository implements Repository {
 		DeleteRequest request = new DeleteRequest(getName(), type, id);
 
 		try {
+			connect();
 			DeleteResponse response = client.delete(request);
 
 			ReplicationResponse.ShardInfo shardInfo = response.getShardInfo();
@@ -139,6 +146,7 @@ public class ElasticSearchRepository implements Repository {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException("Connection cannot be established");
 		}
 
 		return false;
