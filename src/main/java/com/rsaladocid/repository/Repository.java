@@ -1,72 +1,53 @@
 package com.rsaladocid.repository;
 
-import java.io.IOException;
 import java.util.Map;
 
 /**
- * Interface to manage the storage of key-value pairs into document-based
- * databases. This interface provides the basic CRUD operations
+ * Storage of key-value pairs that provides basic CRUD operations.
  */
-public interface Repository {
+public interface Repository<T extends Index> {
 
 	/**
-	 * Returns the name of the repository
+	 * Performs an operation to create a new index to store data.
 	 * 
-	 * @return the name
+	 * @param operation
+	 *            the operation
+	 * @return the new index, or {@link NullIndex} if any index can be created
 	 */
-	public String getName();
+	public T create(CreateIndexOperation operation);
 
 	/**
-	 * Establishes the connection to the repository
+	 * Performs an operation to get data related to a particular index.
 	 * 
-	 * @throws IOException
+	 * @param operation
+	 *            the operation
+	 * @return the key-value pairs
+	 * @throws MissingIndexException
+	 *             if the index does not exist, or is an instance of
+	 *             {@link NullIndex}
 	 */
-	public void connect() throws IOException;
+	public Map<String, Object> retrieve(IndexOperation operation);
 
 	/**
-	 * Closes the connection to the repository
+	 * Performs an operation to update data related to a particular index.
 	 * 
-	 * @throws IOException
+	 * @param operation
+	 *            the operation
+	 * @throws MissingIndexException
+	 *             if the index does not exist, or is an instance of
+	 *             {@link NullIndex}
 	 */
-	public void disconnect() throws IOException;
+	public void update(UpdateIndexOperation operation);
 
 	/**
-	 * Stores a new document with the given content
+	 * Performs an operation to remove an index and the corresponding data.
 	 * 
-	 * @param content
-	 *            the content to store
-	 * @return the document
+	 * @param operation
+	 *            the operation
+	 * @throws MissingIndexException
+	 *             if the index does not exist, or is an instance of
+	 *             {@link NullIndex}
 	 */
-	public Document create(Map<String, Object> content);
-
-	/**
-	 * Returns the document related to the given id
-	 * 
-	 * @param id
-	 *            the document id
-	 * @return the document, or <code>null</code> if there is no document with the
-	 *         given id
-	 */
-	public Document retrieve(String id);
-
-	/**
-	 * Updates the content of the given document
-	 * 
-	 * @param document
-	 *            the document to update
-	 * @return the id of the updated document, or <code>null</code> if the given
-	 *         document is not stored
-	 */
-	public String update(Document document);
-
-	/**
-	 * Removes the document related to the given id
-	 * 
-	 * @param id
-	 *            the document id
-	 * @return <code>true</code> if the document with the given id is deleted;
-	 *         <code>false</code> otherwise
-	 */
-	public boolean delete(String id);
+	public void delete(IndexOperation operation);
 
 }

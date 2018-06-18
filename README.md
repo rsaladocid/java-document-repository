@@ -1,104 +1,60 @@
 com.rsaladocid.repository
 =========================
 
-A simple common API that supports CRUD operations to store and retrieve key-value pairs from your favorite document-based database.
-
-Currently, the following NoSQL document-based databases are supported: [ElasticSearch](https://www.elastic.co/products/elasticsearch), [CouchDB](http://couchdb.apache.org/)
+A simple vendor-agnostic API that supports CRUD operations on key-value pairs indexed by your favorite document-oriented database.
 
 Basic usage
 -----------------
 
-### Create document
+### Create index
 
-A document is automatically generated when the key-value pairs are stored into a document-based database:
+First of all, you have to index your data. The index allows you to retrieve, update or delete your key-value pairs at any time.
 
 ```java
-Repository repository = new ElasticSearchRepository("accounts", "user", builder);
+Repository repository = ...;
+	
+Map<String, Object> data = new HashMap<String, Object>();
+data.put("name", "Alice");
+data.put("email", "alice@geemail.com");
 
-try {
-	repository.connect();
-	
-	Map<String, Object> data = new HashMap<String, Object>();
-	data.put("name", "Alice");
-	data.put("email", "alice@geemail.com");
-
-	Document document = repository.create(data);
-	
-	document.getId(); // Returns: asQ9872jdsq
-	document.getData(): // Returns: {name=Alice,email=alice@geemail.com}
-	
-	repository.disconnect();
-} catch (IOException e) {
-	e.printStackTrace();
-}
+CreateIndexOperation createIndexOperation = new CreateIndexOperation(data);
+Index index = repository.create(createIndexOperation); // Returns: asQ9872jdsq
 ```
 
-### Retrieve document
+### Retrieve index
 
-Any document can be retrieved from the database using the corresponding id:
+Retrieving your data is so easy as using the corresponding index.
 
 ```java
-Repository repository = new ElasticSearchRepository("accounts", "user", builder);
-
-try {
-	repository.connect();
-	
-	Document document = repository.retrieve("asQ9872jdsq");
-	
-	document.getId(); // Returns: asQ9872jdsq
-	document.getData(): // Returns: {name=Alice,email=alice@geemail.com}
-	
-	repository.disconnect();
-} catch (IOException e) {
-	e.printStackTrace();
-}
+IndexOperation indexOperation = new IndexOperation(index);
+Map<String, Object> data = repository.retrieve(indexOperation); // Returns: {name=Alice,email=alice@geemail.com}
 ```
 
-### Update document
+### Update index
 
-When the content of a document is changed, don´t forget commit it:
+You can always replace your outdated data by new ones.
 
 ```java
-Repository repository = new ElasticSearchRepository("accounts", "user", builder);
+Map<String, Object> newData = new HashMap<String, Object>();
+newData.put("name", "Bob");
+newData.put("email", "bob@geemail.com");
 
-try {
-	repository.connect();
-	
-	Document document = repository.retrieve("asQ9872jdsq");
-	document.getData(): // Returns: {name=Alice,email=alice@geemail.com}
-	
-	document.getData().put("name", "Bob");
-	document.getData().put("email", "bob@geemail.com");
-	
-	String id = repository.update(document);
-	
-	Document updatedDocument = repository.retrieve(id);
-	updatedDocument.getData(): // Returns: {name=Bob,email=bob@geemail.com}
-	
-	repository.disconnect();
-} catch (IOException e) {
-	e.printStackTrace();
-}
+UpdateIndexOperation updateOperation = new UpdateIndexOperation(index, newData);
+repository.update(updateOperation);
+
+IndexOperation indexOperation = new IndexOperation(index);
+repository.retrieve(indexOperation); // Returns: {name=Bob,email=bob@geemail.com}
 ```
 
-### Delete document
+### Delete index
 
-Any document can be removed from the database using the corresponding id:
-
+When you don't need your data anymore, remove them.
 
 ```java
-Repository repository = new ElasticSearchRepository("accounts", "user", builder);
+IndexOperation indexOperation = new IndexOperation(index);
+repository.delete(indexOperation);
 
-try {
-	repository.connect();
-
-	repository.delete("asQ9872jdsq");
-	repository.retrieve("asQ9872jdsq"); // Returns: null
-	
-	repository.disconnect();
-} catch (IOException e) {
-	e.printStackTrace();
-}
+repository.retrieve(operation); // Throws: MissingIndexException
 ```
 
 License
