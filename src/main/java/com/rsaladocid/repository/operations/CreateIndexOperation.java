@@ -1,4 +1,4 @@
-package com.rsaladocid.repository;
+package com.rsaladocid.repository.operations;
 
 import java.util.Map;
 

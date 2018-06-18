@@ -2,6 +2,10 @@ package com.rsaladocid.repository;
 
 import java.util.Map;
 
+import com.rsaladocid.repository.operations.CreateIndexOperation;
+import com.rsaladocid.repository.operations.IndexOperation;
+import com.rsaladocid.repository.operations.UpdateIndexOperation;
+
 /**
  * Storage of key-value pairs that provides basic CRUD operations.
  */

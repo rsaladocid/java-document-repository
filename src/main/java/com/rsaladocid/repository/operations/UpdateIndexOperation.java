@@ -1,6 +1,8 @@
-package com.rsaladocid.repository;
+package com.rsaladocid.repository.operations;
 
 import java.util.Map;
+
+import com.rsaladocid.repository.Index;
 
 /**
  * Operation to replace the data related to a particular index.

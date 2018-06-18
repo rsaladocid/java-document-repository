@@ -1,4 +1,6 @@
-package com.rsaladocid.repository;
+package com.rsaladocid.repository.operations;
+
+import com.rsaladocid.repository.Index;
 
 /**
  * Operation to perform using an index.
